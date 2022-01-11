@@ -1,0 +1,20 @@
+{
+  "Countries": [
+    {
+      "id": "cc5fa750-8abd-46bb-a28b-7344f762da3c",
+      "countryname": "Afghanistan",
+      "currency": "Afghan afghani",
+      "population": "38.93 million",
+      "flagurl": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Flag_of_the_Islamic_Republic_of_Afghanistan.svg",
+      "GDP": "263.6 billion USD"
+    },
+    {
+      "id": "e0821a4e-3d05-47c3-95c0-f862dc5a0463",
+      "countryname": "Sri Lanka",
+      "currency": "lkr",
+      "population": "38.93 million",
+      "flagurl": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Flag_of_the_Islamic_Republic_of_Afghanistan.svg",
+      "GDP": "263.6 billion USD"
+    }
+  ]
+}
