@@ -1,71 +1,109 @@
-import React,{useState,useEffect} from 'react';
-import '../App.css';
-import AddCountry from './AddCountry';
+import React, { useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
+import Modal from "react-bootstrap/Modal";
+import "../App.css";
+import EditForm from "./UpdateCountry";
+import AddForm from "./AddCountry";
 
-function CountryDataDisplay() {
+function CountryTable(props) {
+
   const [data, setData] = useState([]);
-  const getData = () => {
-    fetch("http://localhost:3000/Countries"
-      , {
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
+
+  const [showModel, setShowModel] = useState(false);
+  const [columnData, setColumnData] = useState([]);
+
+  const [showAddModel, setShowAddModel] = useState(false);
+
+  const handelEdit =
+    ([columnData]) =>
+    () => {
+      setShowModel(true);
+      setColumnData(columnData);
+    };
+
+  const handelAdd = () => {
+    setShowAddModel(true);
+  };
+
+    const handelDelete = (id) => () => {
+    console.log(id);
+
+           fetch("http://localhost:3000/Countries/" + id, {
+          method: "DELETE",
+        }).then(() => {
+          console.log("delete");
+        });
+    
+        window.location.reload();
+
+
       }
-    )
+
+    const getData = () => {
+    fetch("http://localhost:3000/Countries", {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
       .then(function (response) {
-        console.log(response)
+        console.log(response);
         return response.json();
       })
       .then(function (myJson) {
-        console.log(myJson);
-        setData(myJson)
+          setData(myJson);
       });
-  }
+  };
+
   useEffect(() => {
-    getData()
+    getData();
   }, []);
 
-  const handelDelete = (id) => () => {
-
-    fetch("http://localhost:3000/Countries/" + id, {
-      method: "DELETE",
-    }).then(() => {
-      console.log("Country delete sucessful!");
-    });
-
-  }
-
   return (
-    <div>
+    <div className="container">
+       <br></br> <br></br>
+      <div>
+        <Button class="btn-hover color-1" onClick={handelAdd}>Add New Country </Button>
+      </div> <br></br> <br></br> 
+
       <table>
         <thead>
           <tr>
-            <td> Country Name</td>
-            <td>Currency</td>
-            <td>Population</td>
-            <td>FlagURL</td>
-            <td>GDP</td>
-            <td>Delete</td>
+            <th scope="col">Country Name</th>
+            <th scope="col">Currency</th>
+            <th scope="col">Population</th>
+            <th scope="col">FlagURL</th>
+            <th scope="col">GDP</th>
+            <th scope="col"></th>
           </tr>
         </thead>
+
         <tbody>
-          {
-            data && data.length > 0 && data.map((countrydata) =>
+          {data &&
+            data.length > 0 &&
+            data.map((item) => (
               <tr>
-                <td>{countrydata.countryname}</td>
-                <td>{countrydata.currency}</td>
-                <td>{countrydata.population}</td>
-                <td><a href={countrydata.flagurl}> Flag </a></td>
-                <td>{countrydata.GDP}</td>
-                <td> <button onClick={handelDelete(countrydata.id)}> Delete</button></td>
+                <td>{item.countryname}</td>
+                <td> {item.currency} </td>
+                <td>{item.population}</td>
+                <td> <Button  class="btn-hover color-8"> <a href = { item.flagurl}> Flag </a> </Button> </td>
+                <td>{item.GDP} </td>
+                <td> <Button class="btn-hover color-2" onClick={handelEdit([item])} > Edit </Button> </td> 
+                 <td> <Button class="btn-hover color-3" onClick={handelDelete(item.id)}> Delete </Button> </td>
               </tr>
-            )
-          }
+            ))}
         </tbody>
       </table>
+
+      <Modal show={showModel}>
+        <Modal.Body> <EditForm>{columnData}</EditForm> </Modal.Body>
+       </Modal>
+
+      <Modal show={showAddModel}>
+        <Modal.Body> <AddForm /> </Modal.Body>
+      </Modal>
     </div>
   );
 }
 
-export default CountryDataDisplay;
+export default CountryTable;

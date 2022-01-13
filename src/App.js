@@ -1,14 +1,12 @@
-import {useState} from "react";
-import AddCountry from './Component/AddCountry';
-import CountryDataDisplay from "./Component/GetCountry"
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import CountryTable from "./Component/GetCountry";
 
 
 function App() {
-  
   return (
     <div className="content">
-      <AddCountry />
-      <CountryDataDisplay/>
+      <CountryTable />
     </div>
   );
 }
